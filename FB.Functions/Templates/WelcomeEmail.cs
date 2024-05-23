@@ -1,10 +1,6 @@
-﻿using SendGrid;
+﻿using Newtonsoft.Json;
+using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FB.Functions.Templates
 {
@@ -15,7 +11,7 @@ namespace FB.Functions.Templates
         private const string Sender = "bas.kooistra1986@gmail.com";
         private const string Subject = "Welcome to fitbook";
 
-        public static SendGridMessage CreateMessage(string firstName, string lastName, string email)
+        public static string CreateMessage(string firstName, string lastName, string email)
         {
             var message = new SendGridMessage();
             message.SetFrom(Sender, "Fitbook");
@@ -24,7 +20,7 @@ namespace FB.Functions.Templates
 
             message.AddContent(MimeType.Html, string.Format(MessageTemplate, firstName, lastName));
 
-            return message;
+            return JsonConvert.SerializeObject(message);
         }
     }
 }

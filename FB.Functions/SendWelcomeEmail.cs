@@ -6,14 +6,14 @@ using CommunityToolkit.Diagnostics;
 using FB.Functions.Templates;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using SendGrid.Helpers.Mail;
 
 namespace FB.Functions;
 
 public class SendWelcomeEmail(ILogger<SendWelcomeEmail> logger)
 {
     [Function("SendWelcomeEmail")]
-    public SendGridMessage Run([EventGridTrigger] EventGridEvent cloudEvent, FunctionContext context)
+    [SendGridOutput(ApiKey = "FB_SENDGRID_APIKEY")]
+    public string Run([EventGridTrigger] EventGridEvent cloudEvent, FunctionContext context)
     {
         logger.LogInformation("Event type: {type}, Event subject: {subject}", cloudEvent.EventType, cloudEvent.Subject);
         var data = cloudEvent.Data.ToObjectFromJson<UserCreatedEventData>();

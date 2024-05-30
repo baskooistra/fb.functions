@@ -2,6 +2,6 @@
 {
     public interface IIdentityServerConnector
     {
-        Task<string> GetAccountConfirmationUrl(string userId, CancellationToken cancellationToken);
+        Task<string> GetAccountConfirmationUrl(string userId);
     }
 }

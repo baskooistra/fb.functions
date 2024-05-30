@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace FB.Functions.Connectors.IdentityServer
 {
@@ -13,7 +12,7 @@ namespace FB.Functions.Connectors.IdentityServer
         private const string AccountConfirmationApiUrl = "api/identity/account/{0}/confirmation";
         private readonly IdentityServerConfiguration _configuration = configuration.GetIdentityServerConfiguration();
 
-        async Task<string> IIdentityServerConnector.GetAccountConfirmationUrl(string userId, CancellationToken cancellationToken)
+        async Task<string> IIdentityServerConnector.GetAccountConfirmationUrl(string userId)
         {
             var endpoint = string.Format(AccountConfirmationApiUrl, userId);
 
@@ -25,8 +24,8 @@ namespace FB.Functions.Connectors.IdentityServer
                 logger.LogInformation("Fetching confirmaion link from identity server from {url} for user {userId}",
                     endpoint, userId);
 
-                var response = await client.SendAsync(request, cancellationToken);
-                var confirmationUrl = await response.Content.ReadAsStringAsync(cancellationToken);
+                var response = await client.SendAsync(request);
+                var confirmationUrl = await response.Content.ReadAsStringAsync();
 
                 Guard.IsNotNullOrWhiteSpace(confirmationUrl);
 

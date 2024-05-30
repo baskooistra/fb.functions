@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using CommunityToolkit.Diagnostics;
 using FB.Functions.Connectors.IdentityServer;
+using Azure.Identity;
 
 var host = new HostBuilder()
     .ConfigureAppConfiguration(builder =>
@@ -12,9 +13,19 @@ var host = new HostBuilder()
             builder.AddJsonFile("local.settings.json");
         else
         {
-            var configurationConnection = Environment.GetEnvironmentVariable("CONFIGURATION_CONNECTION_STRING");
-            Guard.IsNotNullOrWhiteSpace(configurationConnection);
-            builder.AddAzureAppConfiguration(configurationConnection);
+            builder.AddAzureAppConfiguration(options =>
+            {
+                var configurationConnection = Environment.GetEnvironmentVariable("CONFIGURATION_CONNECTION_STRING");
+                var configurationKey = Environment.GetEnvironmentVariable("CONFIGURATION_KEY");
+                var environmentName = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT");
+
+                Guard.IsNotNullOrWhiteSpace(configurationConnection);
+
+                var config = options.Connect(new Uri(configurationConnection), new ManagedIdentityCredential())
+                .ConfigureKeyVault(kv => kv.SetCredential(new ManagedIdentityCredential()))
+                .Select($"{configurationKey}*", environmentName)
+                .TrimKeyPrefix(configurationKey);
+            });
         }
     })
     .ConfigureFunctionsWorkerDefaults()

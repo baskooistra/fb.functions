@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FB.Functions", "FB.Functions\FB.Functions.csproj", "{5CFB5F53-4E66-4E56-A155-48716326CC52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FB.Functions.Connectors", "FB.Functions.Connectors\FB.Functions.Connectors.csproj", "{445997B8-EC1F-459B-B9CA-1793E4AEDC09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FB.Functions.Connectors", "FB.Functions.Connectors\FB.Functions.Connectors.csproj", "{445997B8-EC1F-459B-B9CA-1793E4AEDC09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

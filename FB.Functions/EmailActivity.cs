@@ -12,14 +12,14 @@ using System.Threading;
 
 namespace FB.Functions;
 
-public static class EmailActivity
+public class EmailActivity
 {
     [Function(nameof(SendWelcomeEmail))]
     [SendGridOutput(ApiKey = "FB_SENDGRID_APIKEY")]
-    public static string SendWelcomeEmail([ActivityTrigger] UserCreatedEventData userData, FunctionContext executionContext)
+    public string SendWelcomeEmail([ActivityTrigger] SendWelcomeEmailRequest request, FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger(nameof(SendWelcomeEmail));
 
-        return WelcomeEmail.CreateMessage(userData.FirstName, userData.LastName, userData.Email);
+        return WelcomeEmail.CreateMessage(request.UserData.FirstName, request.UserData.LastName, request.UserData.Email, request.ConfirmationLink);
     }
 }

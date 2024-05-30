@@ -16,7 +16,7 @@ var host = new HostBuilder()
             builder.AddAzureAppConfiguration(options =>
             {
                 var configurationConnection = Environment.GetEnvironmentVariable("CONFIGURATION_CONNECTION_STRING");
-                var configurationKey = Environment.GetEnvironmentVariable("CONFIGURATION_KEY");
+                var configurationKey = Environment.GetEnvironmentVariable("CONFIGURATION_KEY") + ":";
                 var environmentName = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT");
 
                 Guard.IsNotNullOrWhiteSpace(configurationConnection);

@@ -5,11 +5,12 @@ using Microsoft.Extensions.Logging;
 namespace FB.Functions.Connectors.IdentityServer
 {
     public class IdentityServerConnector(
-        IConfiguration configuration, 
+        IConfiguration configuration,
         IHttpClientFactory httpClientFactory,
         ILogger<IdentityServerConnector> logger) : IIdentityServerConnector
     {
         private const string AccountConfirmationApiUrl = "api/identity/account/{0}/confirmation";
+
         private readonly IdentityServerConfiguration _configuration = configuration.GetIdentityServerConfiguration();
 
         async Task<string> IIdentityServerConnector.GetAccountConfirmationUrl(string userId)

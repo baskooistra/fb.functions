@@ -6,19 +6,27 @@ using Microsoft.Extensions.Logging;
 
 namespace FB.Functions
 {
-    public static class UserCreatedEventOrchestrator
+    public class UserCreatedEventOrchestrator
     {
         [Function(nameof(UserCreatedEventOrchestrator))]
-        public static async Task RunOrchestrator(
+        public async Task RunOrchestrator(
             [OrchestrationTrigger] TaskOrchestrationContext context)
         {
             ILogger logger = context.CreateReplaySafeLogger(nameof(UserCreatedEventOrchestrator));
             var userData = context.GetInput<UserCreatedEventData>();
 
             logger.LogInformation("Starting task to fetch email confirmation data");
-            var emailConfirmationData = await context.CallActivityAsync<string>(nameof(GetEmailConfirmationData), userData);
+            var emailConfirmationLink = await context.CallActivityAsync<string>(nameof(UserDataActivity.GetEmailConfirmationData), userData);
 
-            Guard.IsNotNullOrWhiteSpace(emailConfirmationData, nameof(GetEmailConfirmationData));
+            Guard.IsNotNullOrWhiteSpace(emailConfirmationLink, nameof(emailConfirmationLink));
+
+            var request = new SendWelcomeEmailRequest
+            {
+                UserData = userData!,
+                ConfirmationLink = emailConfirmationLink
+            };
+
+            await context.CallActivityAsync(nameof(EmailActivity.SendWelcomeEmail), request);
         }
     }
 }

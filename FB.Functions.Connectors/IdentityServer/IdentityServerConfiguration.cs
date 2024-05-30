@@ -15,13 +15,6 @@ namespace FB.Functions.Connectors.IdentityServer
     public static class IConfigurationExtension
     {
         public static IdentityServerConfiguration GetIdentityServerConfiguration(this IConfiguration configuration)
-        {
-            var section = configuration.GetSection(IdentityServerConfiguration.Name);
-            var identityServerConfiguration = section.Get<IdentityServerConfiguration>();
-
-            Guard.IsNotNull(identityServerConfiguration, nameof(identityServerConfiguration));
-
-            return identityServerConfiguration;
-        }
+            => configuration.GetSection(IdentityServerConfiguration.Name).Get<IdentityServerConfiguration>()!;
     }
 }

@@ -1,26 +1,26 @@
 ﻿using FB.Functions.Connectors.IdentityServer;
 using FB.Functions.Models;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.DurableTask;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace FB.Functions;
 
-[DurableTask(nameof(GetEmailConfirmationData))]
-public class GetEmailConfirmationData(
-    ILoggerFactory loggerFactory, 
-    IIdentityServerConnector identityServerConnector) : TaskActivity<UserCreatedEventData, string>
+public class UserDataActivity(ILogger<UserDataActivity> logger, IIdentityServerConnector identityServerConnector)
 {
-    private readonly ILogger _logger = loggerFactory.CreateLogger<GetEmailConfirmationData>();
-
-    public async override Task<string> RunAsync(TaskActivityContext context, UserCreatedEventData input)
+    [Function(nameof(GetEmailConfirmationData))]
+    public async Task<string> GetEmailConfirmationData([ActivityTrigger] UserCreatedEventData input, FunctionContext executionContext)
     {
+        logger.LogInformation("Fetching email confirmation data from identity server");
+
         try
         {
             return await identityServerConnector.GetAccountConfirmationUrl(input.Id);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Unable to fetch confirmation link from identity server");
+            logger.LogError(e, "Unable to fetch confirmation link from identity server");
             throw;
         }
     }

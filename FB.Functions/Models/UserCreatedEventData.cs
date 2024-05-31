@@ -1,5 +1,4 @@
-﻿using Azure.Messaging;
-using Azure.Messaging.EventGrid;
+﻿using Azure.Messaging.EventGrid;
 
 namespace FB.Functions.Models
 {

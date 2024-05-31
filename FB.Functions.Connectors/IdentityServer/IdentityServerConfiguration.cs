@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Diagnostics;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace FB.Functions.Connectors.IdentityServer
 {

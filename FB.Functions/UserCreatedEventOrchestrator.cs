@@ -1,4 +1,5 @@
 using CommunityToolkit.Diagnostics;
+using FB.Functions.Activities;
 using FB.Functions.Models;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.DurableTask;
@@ -26,7 +27,10 @@ namespace FB.Functions
                 ConfirmationLink = emailConfirmationLink
             };
 
-            await context.CallActivityAsync(nameof(EmailActivity.SendWelcomeEmail), request);
+            var emailTask = context.CallActivityAsync(nameof(EmailActivity.SendWelcomeEmail), request);
+            var profileTask = context.CallActivityAsync(nameof(UserProfileActivity.CreateUserProfile), userData);
+
+            await Task.WhenAll(emailTask, profileTask);
         }
     }
 }

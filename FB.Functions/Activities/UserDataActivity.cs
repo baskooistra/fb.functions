@@ -1,11 +1,9 @@
 ﻿using FB.Functions.Connectors.IdentityServer;
 using FB.Functions.Models;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.DurableTask;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace FB.Functions;
+namespace FB.Functions.Activities;
 
 public class UserDataActivity(ILogger<UserDataActivity> logger, IIdentityServerConnector identityServerConnector)
 {

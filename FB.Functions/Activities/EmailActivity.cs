@@ -1,16 +1,11 @@
 ﻿// Default URL for triggering event grid function in the local environment.
 // http://localhost:7071/runtime/webhooks/EventGrid?functionName={functionname}
 
-using Azure.Messaging.EventGrid;
-using CommunityToolkit.Diagnostics;
 using FB.Functions.Models;
 using FB.Functions.Templates;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.DurableTask;
-using Microsoft.Extensions.Logging;
-using System.Threading;
 
-namespace FB.Functions;
+namespace FB.Functions.Activities;
 
 public class EmailActivity
 {
